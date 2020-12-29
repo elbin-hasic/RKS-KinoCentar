@@ -4,31 +4,51 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.kinocentar.R;
-import com.example.kinocentar.viewmodels.ReservationViewModel;
+import com.example.kinocentar.adapters.MoviesAdapter;
+import com.example.kinocentar.data.Storage;
+import com.example.kinocentar.viewmodels.MovieViewModel;
+
+import java.util.ArrayList;
 
 public class ReservationFragment extends Fragment {
 
-    private ReservationViewModel reservationViewModel;
+    private ArrayList<MovieViewModel> mData;
+    private SwipeRefreshLayout SRL_Filmovi;
+    private RecyclerView recyclerViewFilmovi;
+    private RecyclerView.Adapter filmoviAdapter;
+
+    public ReservationFragment() {
+        // Required empty public constructor
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        reservationViewModel = ViewModelProviders.of(this).get(ReservationViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_reservation, container, false);
-        final TextView textView = root.findViewById(R.id.text_reservation);
-        reservationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        View view = inflater.inflate(R.layout.fragment_reservation, container, false);
+
+        getActivity().setTitle("Moje rezervacije");
+
+        mData = Storage.getReservationMovies();
+        filmoviAdapter = new MoviesAdapter(getParentFragmentManager(), mData);
+
+        SRL_Filmovi = view.findViewById(R.id.SRL_Filmovi);
+        recyclerViewFilmovi = view.findViewById(R.id.RV_Filmovi);
+        recyclerViewFilmovi.setHasFixedSize(true);
+        recyclerViewFilmovi.setAdapter(filmoviAdapter);
+
+        SRL_Filmovi.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onRefresh() {
+                mData = Storage.getReservationMovies();
             }
         });
-        return root;
+
+        return view;
     }
 }
