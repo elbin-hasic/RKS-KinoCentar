@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.kinocentar.helper.MySession;
-import com.example.kinocentar.viewmodels.LoginViewModel;
+import com.example.kinocentar.viewmodels.UserViewModel;
 
 public class RootActivity extends AppCompatActivity {
 
@@ -14,8 +14,7 @@ public class RootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //MySession.setKorisnik(null);
-        LoginViewModel x = MySession.getLoginData();
+        UserViewModel x = MySession.getUserData();
 
         if (x == null)
         {

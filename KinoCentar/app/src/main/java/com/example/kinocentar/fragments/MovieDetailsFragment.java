@@ -2,6 +2,7 @@ package com.example.kinocentar.fragments;
 
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -68,6 +69,8 @@ public class MovieDetailsFragment extends Fragment {
             if (_movie.IsRezervisan) {
                 FilmRezervisi.setEnabled(false);
                 FilmRezervisi.setClickable(false);
+                FilmRezervisi.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_gray_btn));
+                FilmRezervisi.setTextColor(getResources().getColor(R.color.colorGreyDark));
             } else {
                 FilmRezervisi.setOnClickListener(new View.OnClickListener() {
                     @Override

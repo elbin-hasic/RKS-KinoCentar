@@ -8,18 +8,24 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.kinocentar.helper.MyApiRequest;
+import com.example.kinocentar.helper.MyCryption;
+import com.example.kinocentar.helper.MyRunnable;
 import com.example.kinocentar.helper.MySession;
 import com.example.kinocentar.viewmodels.LoginViewModel;
+import com.example.kinocentar.viewmodels.UserViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
-    private LoginViewModel loginViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,16 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.ET_UserName);
         passwordEditText = findViewById(R.id.ET_Password);
 
-        final Button loginButton = findViewById(R.id.BTN_Prijava);
+        TextView registerEditText = findViewById(R.id.TV_Register);
+        registerEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button loginButton = findViewById(R.id.BTN_Prijava);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,15 +53,32 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void do_btnLoginClick() {
-        // TODO: Login
-        String strUsername = usernameEditText.getText().toString();
-        String strPassword = passwordEditText.getText().toString();
-        String deviceInfo = android.os.Build.DEVICE+" | " +  android.os.Build.VERSION.RELEASE + " | " + android.os.Build.PRODUCT + " | " + Build.MODEL;
+    private void do_btnLoginClick()
+    {
+        final String strUsername = usernameEditText.getText().toString();
+        final String strPassword = passwordEditText.getText().toString();
 
-        loginViewModel = new LoginViewModel(strUsername, strPassword, deviceInfo);
+        LoginViewModel model = new LoginViewModel(strUsername, strPassword);
 
-        MySession.setLoginData(loginViewModel);
-        startActivity(new Intent(this, MainActivity.class));
+        MyApiRequest.post(this, "Korisnici/CheckLogin", model, new MyRunnable<UserViewModel>() {
+            @Override
+            public void run(UserViewModel user) {
+                checkLogin(user, strUsername, strPassword);
+            }
+        });
+    }
+
+    private void checkLogin(UserViewModel user, String strUsername, String strPassword) {
+        if (user == null)
+        {
+            View parentLayout = findViewById(android.R.id.content);
+            Snackbar.make(parentLayout, "Pogrešan username/password", Snackbar.LENGTH_LONG).show();
+        }
+        else
+        {
+            user.token = MyCryption.GenerateBase64(strUsername + ":" + strPassword);
+            MySession.setUserData(user);
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }

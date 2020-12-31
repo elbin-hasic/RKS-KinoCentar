@@ -2,19 +2,18 @@ package com.example.kinocentar.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 
+import android.util.Base64;
 import android.util.Patterns;
 
 public class LoginViewModel extends ViewModel {
 
-    public String UserName;
-    public String Password;
-    public String DeviceInfo;
+    public String userName;
+    public String password;
 
-    public LoginViewModel(String username, String password, String deviceInfo)
+    public LoginViewModel(String userName, String password)
     {
-        this.UserName = username;
-        this.Password = password;
-        this.DeviceInfo = deviceInfo;
+        this.userName = userName;
+        this.password = password;
     }
 
     // A placeholder username validation check

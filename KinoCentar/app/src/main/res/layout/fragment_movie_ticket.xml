@@ -101,7 +101,7 @@
             android:id="@+id/BTN_Confirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_btn"
+            android:background="@drawable/rounded_red_btn"
             android:text="Potvrdi rezervaciju"
             android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"

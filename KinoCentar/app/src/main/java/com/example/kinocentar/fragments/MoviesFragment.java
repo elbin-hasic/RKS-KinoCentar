@@ -14,7 +14,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.kinocentar.R;
 import com.example.kinocentar.adapters.MoviesAdapter;
 import com.example.kinocentar.data.Storage;
+import com.example.kinocentar.helper.MyApiRequest;
+import com.example.kinocentar.helper.MyRunnable;
 import com.example.kinocentar.viewmodels.MovieViewModel;
+import com.example.kinocentar.viewmodels.UserViewModel;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,13 @@ public class MoviesFragment extends Fragment {
 
         getActivity().setTitle("Filmovi");
 
+        MyApiRequest.get(getActivity(), "Projekcije", new MyRunnable<MovieViewModel>() {
+            @Override
+            public void run(MovieViewModel movie) {
+                popuniPodatke(movie);
+            }
+        });
+
         mData = Storage.getMovies();
         filmoviAdapter = new MoviesAdapter(getParentFragmentManager(), mData);
 
@@ -50,5 +60,8 @@ public class MoviesFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void popuniPodatke(MovieViewModel movie) {
     }
 }

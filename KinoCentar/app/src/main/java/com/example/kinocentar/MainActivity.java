@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
                 MyFragmentUtils.openAsReplace(getSupportFragmentManager(), R.id.nav_host_fragment, new ProfileFragment(), true);
                 break;
             case R.id.nav_logout:
-                MySession.setKorisnik(null);
+                MySession.setUserData(null);
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
         }

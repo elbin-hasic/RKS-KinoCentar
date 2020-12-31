@@ -11,7 +11,7 @@ public class MySession {
     private static String user_key = "KinoCentarUserDataKey";
     private static String login_key = "KinoCentarUserDataKey";
 
-    public static UserViewModel getKorisnik()
+    public static UserViewModel getUserData()
     {
         SharedPreferences sharedPreferences = MyApp.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String strJson = sharedPreferences.getString(user_key, "");
@@ -22,7 +22,7 @@ public class MySession {
         return x;
     }
 
-    public static void setKorisnik(UserViewModel x)
+    public static void setUserData(UserViewModel x)
     {
         String strJson = (x != null) ? MyGson.build().toJson(x) : "";
 
@@ -32,7 +32,7 @@ public class MySession {
         editor.apply();
     }
 
-    public static LoginViewModel getLoginData()
+    /*public static LoginViewModel getLoginData()
     {
         SharedPreferences sharedPreferences = MyApp.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String strJson = sharedPreferences.getString(login_key, "");
@@ -51,5 +51,5 @@ public class MySession {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(login_key, strJson);
         editor.apply();
-    }
+    }*/
 }

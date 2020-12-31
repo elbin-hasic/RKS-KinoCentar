@@ -3,10 +3,16 @@ package com.example.kinocentar.viewmodels;
 import androidx.lifecycle.ViewModel;
 
 public class UserViewModel extends ViewModel {
-    public String Ime;
-    public String Prezime;
-    public String Adresa;
-    public String DatumRodjenja;
-    public String Spol;
-    public String KorisnickoIme;
+    public int id;
+    public String korisnickoIme;
+    public String token;
+    public String lozinkaHash;
+    public String lozinkaSalt;
+
+    public String ime;
+    public String prezime;
+    public String email;
+    public String spol;
+    public String adresa;
+    public String datumRodjenja;
 }
