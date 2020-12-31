@@ -57,22 +57,26 @@ public class LoginActivity extends AppCompatActivity {
     {
         final String strUsername = usernameEditText.getText().toString();
         final String strPassword = passwordEditText.getText().toString();
-
         LoginViewModel model = new LoginViewModel(strUsername, strPassword);
 
-        MyApiRequest.post(this, "Korisnici/CheckLogin", model, new MyRunnable<UserViewModel>() {
-            @Override
-            public void run(UserViewModel user) {
-                checkLogin(user, strUsername, strPassword);
-            }
-        });
+        if (model.isUserNameValid() && model.isPasswordValid()) {
+
+            MyApiRequest.post(this, "Korisnici/CheckLogin", model, new MyRunnable<UserViewModel>() {
+                @Override
+                public void run(UserViewModel user) {
+                    checkLogin(user, strUsername, strPassword);
+                }
+            });
+        }
+        else {
+            writeMessage("Pogrešan username/password");
+        }
     }
 
     private void checkLogin(UserViewModel user, String strUsername, String strPassword) {
         if (user == null)
         {
-            View parentLayout = findViewById(android.R.id.content);
-            Snackbar.make(parentLayout, "Pogrešan username/password", Snackbar.LENGTH_LONG).show();
+            writeMessage("Pogrešan username/password");
         }
         else
         {
@@ -80,5 +84,10 @@ public class LoginActivity extends AppCompatActivity {
             MySession.setUserData(user);
             startActivity(new Intent(this, MainActivity.class));
         }
+    }
+
+    private void writeMessage(String text) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, text, Snackbar.LENGTH_LONG).show();
     }
 }

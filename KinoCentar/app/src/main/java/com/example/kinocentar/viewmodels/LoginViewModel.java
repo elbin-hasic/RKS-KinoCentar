@@ -2,7 +2,6 @@ package com.example.kinocentar.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 
-import android.util.Base64;
 import android.util.Patterns;
 
 public class LoginViewModel extends ViewModel {
@@ -17,19 +16,19 @@ public class LoginViewModel extends ViewModel {
     }
 
     // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        if (username == null) {
+    public boolean isUserNameValid() {
+        if (this.userName == null) {
             return false;
         }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
+        if (this.userName.contains("@")) {
+            return Patterns.EMAIL_ADDRESS.matcher(this.userName).matches();
         } else {
-            return !username.trim().isEmpty();
+            return !this.userName.trim().isEmpty();
         }
     }
 
     // A placeholder password validation check
-    private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+    public boolean isPasswordValid() {
+        return this.password != null && this.password.trim().length() > 5;
     }
 }

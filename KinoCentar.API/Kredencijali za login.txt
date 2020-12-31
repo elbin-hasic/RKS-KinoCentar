@@ -1,0 +1,15 @@
+Kredencijali za login na desktop/mobilnu aplikaciju:
+====================================================
+Desktop verzija:
+Korisničko ime: admin
+Lozinka: test
+Korisničko ime: desktop
+Lozinka: test
+Korisničko ime: moderator
+Lozinka: test
+Korisničko ime: radnik
+Lozinka: test
+----------------------------------------------------
+Mobile verzija:
+Korisničko ime: mobile
+Lozinka: test
