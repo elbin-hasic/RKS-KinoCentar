@@ -1,4 +1,4 @@
-version: '3'
+version: '2.4'
 services:
 #mssql docker
   kinocentar-sql:
@@ -11,7 +11,8 @@ services:
     ports:
       - 1401:1433
     networks:
-      - kinocentar-net
+      kinocentar-net:
+        ipv4_address: 172.16.238.10
 
   kinocentar-api:
     restart: unless-stopped
@@ -22,7 +23,8 @@ services:
     ports:
       - 5000:5050
     networks:
-      - kinocentar-net      
+      kinocentar-net:
+        ipv4_address: 172.16.238.20
     links:
       - kinocentar-sql
     depends_on:
@@ -30,4 +32,9 @@ services:
       
 networks:
   kinocentar-net:
-    driver: bridge      
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
