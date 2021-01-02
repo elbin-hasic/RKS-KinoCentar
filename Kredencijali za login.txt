@@ -1,0 +1,4 @@
+Kredencijali za login na desktop/mobilnu aplikaciju:
+====================================================
+Korisničko ime: mobile
+Lozinka: test
