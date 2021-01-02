@@ -63,7 +63,7 @@ public class MyApiRequest {
                 }
                 else
                 {
-                    if (myCallback !=null) {
+                    if (myCallback != null) {
                         Type genericType = myCallback.getGenericType();
 
                         T x = null;
@@ -73,6 +73,7 @@ public class MyApiRequest {
                             View parentLayout = activity.findViewById(android.R.id.content);
                             Snackbar.make(parentLayout, "Greška u aplikaciji. ", Snackbar.LENGTH_LONG).show();
                         }
+
                         myCallback.run(x);
                     }
                 }

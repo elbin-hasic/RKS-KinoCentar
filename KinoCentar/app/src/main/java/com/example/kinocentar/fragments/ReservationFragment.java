@@ -14,13 +14,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.kinocentar.R;
 import com.example.kinocentar.adapters.MoviesAdapter;
 import com.example.kinocentar.data.Storage;
-import com.example.kinocentar.viewmodels.MovieViewModel;
-
-import java.util.ArrayList;
+import com.example.kinocentar.helper.MyApiRequest;
+import com.example.kinocentar.helper.MyRunnable;
+import com.example.kinocentar.helper.MySession;
+import com.example.kinocentar.viewmodels.ProjectionMovieViewModel;
+import com.example.kinocentar.viewmodels.UserViewModel;
 
 public class ReservationFragment extends Fragment {
 
-    private ArrayList<MovieViewModel> mData;
+    private UserViewModel _user;
+    private ProjectionMovieViewModel mData;
     private SwipeRefreshLayout SRL_Filmovi;
     private RecyclerView recyclerViewFilmovi;
     private RecyclerView.Adapter filmoviAdapter;
@@ -34,21 +37,36 @@ public class ReservationFragment extends Fragment {
 
         getActivity().setTitle("Moje rezervacije");
 
-        mData = Storage.getReservationMovies();
-        filmoviAdapter = new MoviesAdapter(getParentFragmentManager(), mData);
+        _user = MySession.getUserData();
+
+        popuniPodatke();
 
         SRL_Filmovi = view.findViewById(R.id.SRL_Filmovi);
         recyclerViewFilmovi = view.findViewById(R.id.RV_Filmovi);
         recyclerViewFilmovi.setHasFixedSize(true);
-        recyclerViewFilmovi.setAdapter(filmoviAdapter);
-
-        SRL_Filmovi.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mData = Storage.getReservationMovies();
-            }
-        });
 
         return view;
+    }
+
+    private void popuniPodatke() {
+        MyApiRequest.get(getActivity(), "Rezervacije/GetMoviesByUserName/" + _user.korisnickoIme, new MyRunnable<ProjectionMovieViewModel>() {
+            @Override
+            public void run(ProjectionMovieViewModel x) {
+                Storage.setReservations(x);
+
+                mData = Storage.getReservations();
+                if (mData != null) {
+                    filmoviAdapter = new MoviesAdapter(getParentFragmentManager(), getContext(), mData, true);
+                    recyclerViewFilmovi.setAdapter(filmoviAdapter);
+                }
+
+                SRL_Filmovi.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        mData = Storage.getReservations();
+                    }
+                });
+            }
+        });
     }
 }

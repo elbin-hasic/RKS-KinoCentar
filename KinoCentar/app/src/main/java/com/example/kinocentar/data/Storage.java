@@ -1,38 +1,47 @@
 package com.example.kinocentar.data;
 
-import com.example.kinocentar.viewmodels.MovieViewModel;
+import com.example.kinocentar.viewmodels.ProjectionMovieViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Storage {
     // Filmovi
-    private static ArrayList<MovieViewModel> movies;
-    public static ArrayList<MovieViewModel> getMovies()
-    {
-        if (movies == null)
-        {
-            movies = new ArrayList<>();
-            movies.add(new MovieViewModel(1, "Gori vatra", 2, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.", true, getZanrList()));
-            movies.add(new MovieViewModel(2, "Avatar", 3.5, "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", false, getZanrList()));
-            movies.add(new MovieViewModel(3, "Avengers", 2.5, "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.", false, getZanrList()));
-            movies.add(new MovieViewModel(4, "Incsption", 2, "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", true, getZanrList()));
-            movies.add(new MovieViewModel(5, "WALL-E", 3.5, "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", false, getZanrList()));
-        }
+    private static ProjectionMovieViewModel _projections;
 
-        return movies;
+    public static ProjectionMovieViewModel getProjections()
+    {
+        return _projections;
     }
 
-    public static ArrayList<MovieViewModel> getReservationMovies()
+    public static void setProjections(ProjectionMovieViewModel projections)
     {
-        ArrayList<MovieViewModel> result = new ArrayList<>();
+        _projections = projections;
+    }
 
-        for (MovieViewModel x : movies) {
-            if (x.IsRezervisan) {
-                result.add(x);
+    public static ProjectionMovieViewModel getProjectionsByName(String query) {
+        ProjectionMovieViewModel result = new ProjectionMovieViewModel();
+        result.rows = new ArrayList<>();
+
+        for (ProjectionMovieViewModel.Row x: _projections.rows) {
+            if (x.naslov.toLowerCase().startsWith(query.toLowerCase())) {
+                result.rows.add(x);
             }
         }
 
         return result;
+    }
+
+    private static ProjectionMovieViewModel _reservations;
+
+    public static ProjectionMovieViewModel getReservations()
+    {
+        return _reservations;
+    }
+
+    public static void setReservations(ProjectionMovieViewModel reservations)
+    {
+        _reservations = reservations;
     }
 
     // Žanrovi
@@ -57,8 +66,8 @@ public class Storage {
         {
             spolovi = new ArrayList<>();
             spolovi.add(" ");
-            spolovi.add("Musko");
-            spolovi.add("Zensko");
+            spolovi.add("Muško");
+            spolovi.add("Žensko");
         }
 
         return spolovi;

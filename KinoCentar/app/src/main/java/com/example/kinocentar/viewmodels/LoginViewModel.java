@@ -1,10 +1,8 @@
 package com.example.kinocentar.viewmodels;
 
-import androidx.lifecycle.ViewModel;
-
 import android.util.Patterns;
 
-public class LoginViewModel extends ViewModel {
+public class LoginViewModel {
 
     public String userName;
     public String password;

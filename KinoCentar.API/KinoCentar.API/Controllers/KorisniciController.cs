@@ -13,6 +13,7 @@ using System.Net;
 using KinoCentar.Shared;
 using KinoCentar.Shared.Extensions;
 using KinoCentar.Shared.Util;
+using KinoCentar.API.EntityModels.Extensions;
 
 namespace KinoCentar.API.Controllers
 {
@@ -158,7 +159,7 @@ namespace KinoCentar.API.Controllers
         // PUT: api/Korisnici/5
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutKorisnik(int id, Korisnik korisnik)
+        public async Task<IActionResult> PutKorisnik(int id, KorisnikExtension korisnik)
         {
             if (id != korisnik.Id)
             {
@@ -175,10 +176,38 @@ namespace KinoCentar.API.Controllers
                 return StatusCode((int)HttpStatusCode.Conflict, Messages.korisnik_email_err);
             }
 
-            _context.Entry(korisnik).State = EntityState.Modified;
+            var editUser = await _context.Korisnik.FindAsync(id);
+            if (editUser == null)
+            {
+                return NotFound();
+            }
 
             try
             {
+                editUser.Ime = korisnik.Ime;
+                editUser.Prezime = korisnik.Prezime;
+                editUser.Email = korisnik.Email;
+                editUser.DatumRodjenja = korisnik.DatumRodjenja;
+                editUser.Spol = korisnik.Spol;
+
+                editUser.KorisnickoIme = korisnik.KorisnickoIme;
+                editUser.Slika = korisnik.Slika;
+                editUser.SlikaThumb = korisnik.SlikaThumb;
+
+                if (string.IsNullOrEmpty(korisnik.LozinkaHash) || string.IsNullOrEmpty(korisnik.LozinkaHash))
+                {
+                    if (!string.IsNullOrEmpty(korisnik.Lozinka))
+                    {
+                        korisnik.LozinkaSalt = UIHelper.GenerateSalt();
+                        korisnik.LozinkaHash = UIHelper.GenerateHash(korisnik.LozinkaSalt, korisnik.Lozinka);
+                    }
+                }
+                else
+                {
+                    editUser.LozinkaSalt = korisnik.LozinkaSalt;
+                    editUser.LozinkaHash = korisnik.LozinkaHash;
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -199,7 +228,7 @@ namespace KinoCentar.API.Controllers
         // POST: api/Korisnici/Registracija
         [HttpPost]
         [Route("Registracija")]
-        public async Task<ActionResult<Korisnik>> PostRegistracijaKorisnik(Korisnik korisnik)
+        public async Task<ActionResult<Korisnik>> PostRegistracijaKorisnik(KorisnikExtension korisnik)
         {
             if (string.IsNullOrEmpty(korisnik.KorisnickoIme))
             {
@@ -214,6 +243,17 @@ namespace KinoCentar.API.Controllers
             if (KorisnikExistsByEmail(korisnik.Email))
             {
                 return StatusCode((int)HttpStatusCode.Conflict, Messages.korisnik_email_err);
+            }
+
+            if (string.IsNullOrEmpty(korisnik.LozinkaHash) || string.IsNullOrEmpty(korisnik.LozinkaHash))
+            {
+                if (string.IsNullOrEmpty(korisnik.Lozinka))
+                {
+                    return BadRequest();
+                }
+
+                korisnik.LozinkaSalt = UIHelper.GenerateSalt();
+                korisnik.LozinkaHash = UIHelper.GenerateHash(korisnik.LozinkaSalt, korisnik.Lozinka);
             }
 
             var tipKorisnik = await _context.TipKorisnika.FirstOrDefaultAsync(x => x.Naziv.ToLower() == TipKorisnikaType.Klijent.ToString().ToLower());

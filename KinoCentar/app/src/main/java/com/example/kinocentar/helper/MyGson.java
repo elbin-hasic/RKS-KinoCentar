@@ -8,6 +8,7 @@ public class MyGson {
     {
         return builder().create();
     }
+
     public static GsonBuilder builder()
     {
         GsonBuilder builder = new GsonBuilder();

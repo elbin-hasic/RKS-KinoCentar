@@ -50,13 +50,41 @@
                     android:layout_marginEnd="16dp"
                     android:textColorHint="@color/colorWhite">
                     <EditText
-                        android:id="@+id/ET_FullName"
+                        android:id="@+id/ET_FirstName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorRedDark"
                         android:backgroundTint="@color/colorRedDark"
                         android:gravity="center_horizontal"
-                        android:hint="Ime i prezime"
+                        android:hint="Ime"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="14dp"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textInputLayout"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColorHint="@color/colorWhite">
+                    <EditText
+                        android:id="@+id/ET_LastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorRedDark"
+                        android:backgroundTint="@color/colorRedDark"
+                        android:gravity="center_horizontal"
+                        android:hint="Prezime"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:minLines="1"
@@ -72,7 +100,7 @@
                     android:id="@+id/textInputLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textInputLayout"
+                    android:layout_below="@+id/textInputLayout10"
                     android:layout_marginTop="4dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
@@ -98,40 +126,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textInputLayout1"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:textColorHint="@color/colorWhite">
-
-                    <EditText
-                        android:id="@+id/ET_UserName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorRedDark"
-                        android:backgroundTint="@color/colorRedDark"
-                        android:gravity="center_horizontal"
-                        android:hint="Korisnicko ime"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:minLines="1"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="14dp"
-                        android:textColor="@color/colorWhite"
-                        android:textColorHint="@color/colorWhite" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textInputLayout2"
+                    android:layout_below="@+id/textInputLayout1"
                     android:layout_marginTop="4dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
@@ -158,12 +156,42 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textInputLayout3"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textColorHint="@color/colorWhite">
+
+                    <EditText
+                        android:id="@+id/ET_UserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorRedDark"
+                        android:backgroundTint="@color/colorRedDark"
+                        android:gravity="center_horizontal"
+                        android:hint="Korisnicko ime"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="14dp"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorWhite" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/SP_Spol"
                     style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textInputLayout3"
+                    android:layout_below="@+id/textInputLayout2"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"

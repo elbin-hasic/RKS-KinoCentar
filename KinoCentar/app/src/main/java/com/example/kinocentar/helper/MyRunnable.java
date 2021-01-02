@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 
 public abstract class MyRunnable<T> implements Serializable
 {
-    public abstract void  run(T t);
+    public abstract void run(T t);
 
     public Class<T> getGenericType()
     {

@@ -2,7 +2,6 @@ package com.example.kinocentar.fragments;
 
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,11 +13,12 @@ import android.widget.TextView;
 
 import com.example.kinocentar.R;
 import com.example.kinocentar.helper.MyFragmentUtils;
-import com.example.kinocentar.viewmodels.MovieViewModel;
+import com.example.kinocentar.helper.MyImage;
+import com.example.kinocentar.viewmodels.ProjectionMovieViewModel;
 
 public class MovieDetailsFragment extends Fragment {
 
-    private MovieViewModel _movie;
+    private ProjectionMovieViewModel.Row _projection;
 
     private TextView FilmNaslov;
     private TextView FilmOpis;
@@ -31,8 +31,8 @@ public class MovieDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public MovieDetailsFragment(MovieViewModel movie) {
-        _movie = movie;
+    public MovieDetailsFragment(ProjectionMovieViewModel.Row projection) {
+        _projection = projection;
     }
 
     @Override
@@ -46,41 +46,33 @@ public class MovieDetailsFragment extends Fragment {
         FilmCijena = view.findViewById(R.id.TV_FilmCijena);
         FilmZanr = view.findViewById(R.id.TV_Zanr);
         FilmRezervisi = view.findViewById(R.id.BTN_Rezervisi);
-
-        /*
         FilmSlika = view.findViewById(R.id.IV_FilmSlika);
-        */
 
-        if (_movie != null)
+        if (_projection != null)
         {
-            String _naslovUpper = _movie.Naslov.toString().toUpperCase();
+            String _naslovUpper = _projection.naslov.toString().toUpperCase();
             getActivity().setTitle(_naslovUpper);
 
             FilmNaslov.setText(_naslovUpper);
-            FilmOpis.setText(_movie.Opis);
-            FilmCijena.setText(_movie.Cijena + " KM");
+            FilmOpis.setText(_projection.sadrzaj);
+            FilmCijena.setText(_projection.cijena + " KM");
 
-            if (_movie.Zanr != null && _movie.Zanr.size() > 0) {
-                FilmZanr.setText(_movie.Zanr.get(0).toUpperCase());
+            if (_projection.zanr != null) {
+                FilmZanr.setText(_projection.zanr.toUpperCase());
             } else {
                 FilmZanr.setText("---");
             }
 
-            if (_movie.IsRezervisan) {
-                FilmRezervisi.setEnabled(false);
-                FilmRezervisi.setClickable(false);
-                FilmRezervisi.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_gray_btn));
-                FilmRezervisi.setTextColor(getResources().getColor(R.color.colorGreyDark));
-            } else {
-                FilmRezervisi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        MyFragmentUtils.openAsReplace(getFragmentManager(), R.id.nav_host_fragment, new MovieTicketFragment(_movie), true);
-                    }
-                });
+            if (_projection.plakat != null) {
+                FilmSlika.setImageBitmap(MyImage.GenerateBase64(_projection.plakat));
             }
 
-            //Glide.with(Objects.requireNonNull(getContext())).load(_film.ThumbnailURL).into(FilmSlika);
+            FilmRezervisi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyFragmentUtils.openAsReplace(getFragmentManager(), R.id.nav_host_fragment, new MovieTicketFragment(_projection), true);
+                }
+            });
         }
 
         return view;

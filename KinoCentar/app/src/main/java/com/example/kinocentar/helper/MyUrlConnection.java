@@ -56,7 +56,7 @@ public class MyUrlConnection
 
             int statusCode = connection.getResponseCode();
 
-            if (statusCode == 200) {
+            if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 String response = convertToString(inputStream);
                 return MyApiResult.OK(response);

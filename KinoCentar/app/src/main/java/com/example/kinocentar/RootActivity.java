@@ -14,9 +14,9 @@ public class RootActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UserViewModel x = MySession.getUserData();
+        UserViewModel user = MySession.getUserData();
 
-        if (x == null)
+        if (user == null)
         {
             startActivity(new Intent(this, LoginActivity.class));
         }

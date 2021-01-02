@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Net;
 using KinoCentar.Shared;
 using KinoCentar.Shared.Extensions;
+using KinoCentar.Shared.Models;
 
 namespace KinoCentar.API.Controllers
 {
@@ -71,6 +72,40 @@ namespace KinoCentar.API.Controllers
                             .Include(x => x.Film).AsNoTracking()
                             .Include(x => x.Sala).AsNoTracking()
                             .Where(x => x.VrijediOd.Date <= dtn && x.VrijediDo.Date >= dtn).ToListAsync();
+        }
+
+        // GET: api/Projekcije/ActiveMovieList
+        [HttpGet]
+        [Route("ActiveMovieList")]
+        public async Task<ActionResult<ProjekcijaFilmModel>> GetAktivneFilmskeProjekcije()
+        {
+            var dtn = DateTime.Now.Date;
+
+            var model = new ProjekcijaFilmModel
+            {
+                Rows = await _context.Projekcija
+                            .Include(x => x.Termini).AsNoTracking()
+                            .Include(x => x.Film).AsNoTracking()
+                            .Include(x => x.Sala).AsNoTracking()
+                            .Where(x => x.VrijediOd.Date <= dtn && x.VrijediDo.Date >= dtn)
+                            .Select(x => new ProjekcijaFilmModel.Row
+                            {
+                                ProjekcijaId = x.Id,
+                                FilmId = x.FilmId,
+                                Naslov = x.Film.Naslov,
+                                Sadrzaj = x.Film.Sadrzaj,
+                                Cijena = x.Cijena,
+                                Zanr = x.Film.Zanr.Naziv,
+                                Plakat = x.Film.Plakat,
+                                PlakatThumb = x.Film.PlakatThumb,
+                                Datum = x.Datum,
+                                VrijediOd = x.VrijediOd,
+                                VrijediDo = x.VrijediDo,
+                                Termini = x.Termini.Select(t => new ProjekcijaFilmTerminModel { Id = t.Id, Termin = t.Termin }).ToList()
+                            }).ToListAsync()
+            };
+
+            return model;
         }
 
         // GET: api/Projekcije/RecommendedList/{userName}
